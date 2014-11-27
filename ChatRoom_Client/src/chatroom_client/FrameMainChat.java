@@ -1,5 +1,7 @@
 package chatroom_client;
 
+import java.awt.Font;
+
 public class FrameMainChat extends javax.swing.JFrame {
 
     public FrameMainChat( ) {
@@ -212,11 +214,13 @@ public class FrameMainChat extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIconMouseClicked
-
+        FrameIcon fi = new FrameIcon();
+        fi.show();
     }//GEN-LAST:event_btnIconMouseClicked
 
     private void jComboBoxListFontItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxListFontItemStateChanged
-
+        FontName = jComboBoxListFont.getSelectedItem().toString();
+        getFontStyle(FontName, Bold, Italic, FontSize);
     }//GEN-LAST:event_jComboBoxListFontItemStateChanged
 
     private void btnColorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnColorMouseClicked
@@ -232,11 +236,14 @@ public class FrameMainChat extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIconActionPerformed
 
     private void btnBoldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBoldMouseClicked
-        
+        Bold = btnBold.isSelected();
+        getFontStyle(FontName, Bold, Italic, FontSize);
     }//GEN-LAST:event_btnBoldMouseClicked
 
     private void jTextArea_Iput_MessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea_Iput_MessageKeyTyped
-             
+        if(jTextArea_Iput_Message.getText().contains("\n")){
+           
+         }     
     }//GEN-LAST:event_jTextArea_Iput_MessageKeyTyped
 
     private void btnSendKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSendKeyPressed
@@ -244,13 +251,33 @@ public class FrameMainChat extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSendKeyPressed
 
     private void btnUnderlineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUnderlineMouseClicked
-
+        Under = btnUnderline.isSelected();
+        getFontStyle(FontName, Bold, Italic, FontSize);
     }//GEN-LAST:event_btnUnderlineMouseClicked
 
     private void btnItaliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnItaliMouseClicked
-
+        Italic = btnItali.isSelected();
+        getFontStyle(FontName, Bold, Italic, FontSize);
     }//GEN-LAST:event_btnItaliMouseClicked
-
+    public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size) {
+        Font f;
+        if(Bold && Italic)
+            f = new Font(FontName, Font.BOLD + Font.ITALIC, Size);
+        else
+        if(Bold)
+            f = new Font(FontName, Font.BOLD, Size);
+        else
+        if(Italic)
+            f = new Font(FontName, Font.ITALIC, Size);        
+        else
+            f=new Font(FontName, Font.PLAIN, Size);
+        jTextArea_Iput_Message.setFont(f);
+    }
+    
+    public void setIcon(String icon){
+       jTextArea_Iput_Message.setText(jTextArea_Iput_Message.getText()+icon);
+    }
+    
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -285,5 +312,9 @@ public class FrameMainChat extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea_Iput_Message;
     private javax.swing.JTextPane jTextPane_Message;
     // End of variables declaration//GEN-END:variables
+    
+    private String FontName = "Arial",ColorName="#000000";
+    private Boolean Bold = false,Under=false,Italic=false;
+    private int FontSize = 14;
     
 }

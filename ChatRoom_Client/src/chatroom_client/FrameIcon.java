@@ -5,7 +5,12 @@ public class FrameIcon extends javax.swing.JFrame {
     public FrameIcon() {
         initComponents();
     }
-    
+    public FrameIcon(FrameMainChat parent) {
+        initComponents();
+        //khởi tạo nếu form mẹ là form chát phòng
+        parentMain = parent;
+        pType =true;
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -400,11 +405,11 @@ public class FrameIcon extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton39ActionPerformed
 
     private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
-
+        this.setVisible(false);
     }//GEN-LAST:event_formFocusLost
 
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
-
+        this.setVisible(false);
     }//GEN-LAST:event_formWindowDeactivated
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -412,7 +417,9 @@ public class FrameIcon extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btn01(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn01
-
+        if(pType) {
+            parentMain.setIcon(":)");
+        }
     }//GEN-LAST:event_btn01
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {                                      
@@ -480,5 +487,6 @@ public class FrameIcon extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     // End of variables declaration//GEN-END:variables
-
+    private FrameMainChat parentMain;
+    private boolean pType =true;
 }
