@@ -48,6 +48,57 @@ public void AddMessageToPanel(String msg,String bgImageURL) {
         MessagePane.setText(strBMsg.toString());
         
     }
+     public String ReplaceString(String msg,String strToReplace,int indexOfStr,String strReplace)
+    {
+         StringBuilder strB=new StringBuilder(msg);
+        strB.replace(indexOfStr, indexOfStr + strToReplace.length() , strReplace);
+        return strB.toString();
+    }
+    public String ProcessMessage(String msg)
+    {
+        index1 = msg.indexOf(":") + 1;
+        index2 = msg.indexOf("  ");
+        String OpenTags = msg.substring(index1,index2);
+        index1 = msg.indexOf("</font>");
+        String CloseTage = msg.substring(index1);
+        String tempString;
+
+        int index, length;
+        StringBuilder strB =new StringBuilder(msg);
+        IconIndex =0;
+        for(String smileText: arrSmiles)
+        {
+            length = smileText.length();
+            if(msg.toLowerCase().contains(smileText.toLowerCase()))
+            {
+                while(msg.toLowerCase().contains(smileText.toLowerCase()))
+                {
+                    tempString = msg.toLowerCase();
+                    try
+                    {
+                    index1 = tempString.indexOf(smileText.toLowerCase());
+                    strB = strB.insert(index1, CloseTage);
+                    index2 = index1 + CloseTage.length() + smileText.length();
+                    strB = strB.insert(index2, OpenTags);
+                    
+                    index1 = index1 + CloseTage.length();
+                    strB = strB.replace(index1, index2, GetIconFromCode(IconIndex));
+                    msg = strB.toString();
+                    }
+                    catch(Exception e)
+                    {
+                    }
+                }
+            }
+            IconIndex++;
+        }
+        return strB.toString();
+    }
+     public String GetIconFromCode(int IconIndex)
+    {
+            return "<img src = \"" + "file:///" + ImageDir + Integer.toString(IconIndex) + ".gif\" />";
+    }
+
      JTextPane MessagePane;
     JList UserList;
     ArrayList messageArr;
