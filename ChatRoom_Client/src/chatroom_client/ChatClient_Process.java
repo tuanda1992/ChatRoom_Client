@@ -98,6 +98,32 @@ public void AddMessageToPanel(String msg,String bgImageURL) {
     {
             return "<img src = \"" + "file:///" + ImageDir + Integer.toString(IconIndex) + ".gif\" />";
     }
+      public void GetFontList(javax.swing.JComboBox cob)
+    {
+
+        GraphicsEnvironment gEvn = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Font[] fList=gEvn.getAllFonts();
+        for(int i=0;i<fList.length;i++)
+        {
+            try
+            {
+                cob.insertItemAt(fList[i].getFontName(), i);
+            }
+            catch(Exception ex){}
+        }
+    }
+       public void SendMessageToServer(Socket socket,String msg)
+    {
+        try
+        {
+            out = new DataOutputStream(socket.getOutputStream());
+            out.writeUTF(msg + "\r\n");
+        }
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra:\n" + ex.getMessage());
+        }
+    }
 
      JTextPane MessagePane;
     JList UserList;
