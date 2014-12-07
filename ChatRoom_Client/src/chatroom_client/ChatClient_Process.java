@@ -124,6 +124,25 @@ public void AddMessageToPanel(String msg,String bgImageURL) {
             JOptionPane.showMessageDialog(null, "Có lỗi xảy ra:\n" + ex.getMessage());
         }
     }
+       public String getCodeColor(int Red, int Green,int Blue)
+    {
+        //Thủ tục lấy mã màu dạng #ffffff từ 3 số nguyên
+        String sRED,sGREEN,sBLUE;
+        if(Red >0 )
+            sRED = Integer.toHexString(Red);
+        else
+            sRED = "00";
+        if(Green > 0)
+            sGREEN = Integer.toHexString(Green);
+        else
+            sGREEN = "00";
+        if(Blue > 0)
+            sBLUE = Integer.toHexString(Blue);
+        else
+            sBLUE = "00";
+
+        return "#" + sRED + sGREEN + sBLUE;
+    }
 
      JTextPane MessagePane;
     JList UserList;
