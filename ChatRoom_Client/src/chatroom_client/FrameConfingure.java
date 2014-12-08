@@ -1,12 +1,42 @@
 
 package chatroom_client;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import javax.swing.JOptionPane;
+
 
 public class FrameConfingure extends javax.swing.JFrame {
 
   
-   
+   private FilesProcess file;
+   private String ConfigFile;
     public FrameConfingure() {
+         initComponents();
+        ConfigFile = "Config.ini";
+        file = new FilesProcess();
+        try
+        {
+            FileReader read = file.FileRead(ConfigFile);
+            BufferedReader reader = new BufferedReader(read);
+            String line = reader.readLine();
+            while(line != null)
+            {
+                if(line.startsWith("port"))
+                {
+                    String str[] = line.trim().split("=");
+                    spinPort.setValue(Integer.parseInt(str[1].trim()));
+                }
+                line = reader.readLine();
+            }
+            reader.close();
+            read.close();
+        }
+        catch(Exception ex)
+        {
+           
+        }
         
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -16,8 +46,8 @@ public class FrameConfingure extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         spinPort = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -27,17 +57,22 @@ public class FrameConfingure extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel3.setText("Port");
 
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSave.setText("Save");
+        btnSave.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSaveMouseClicked(evt);
+            }
+        });
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSaveActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Cancel");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnCancelActionPerformed(evt);
             }
         });
 
@@ -58,9 +93,9 @@ public class FrameConfingure extends javax.swing.JFrame {
                         .addGap(69, 69, 69)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(btnSave)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2))
+                                .addComponent(btnCancel))
                             .addComponent(spinPort, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -77,21 +112,39 @@ public class FrameConfingure extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnSave)
+                    .addComponent(btnCancel))
                 .addGap(26, 26, 26))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
        
-    }//GEN-LAST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
+        try{
+        FileWriter w = file.FileCreate(ConfigFile);
+                w.write(";Do An Java\r\n");
+                w.write(";Bach khoa Ha Noi\r\n");
+                w.write(";Cau hinh cho chat server\r\n");
+                w.write("port = " + spinPort.getValue() + "\r\n");
+                w.close();
+
+                JOptionPane.showMessageDialog(null, "Quá trình lưu thông tin cấu hình thành công!","Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Lỗi đọc file cấu hình:\n" + ex.getMessage(),"Thông báo",JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnSaveMouseClicked
 
    
     public static void main(String args[]) {
@@ -105,8 +158,8 @@ public class FrameConfingure extends javax.swing.JFrame {
 
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
