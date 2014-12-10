@@ -1,6 +1,10 @@
 
 package chatroom_client;
 
+import java.awt.Font;
+import java.awt.Color;
+import javax.swing.JColorChooser;
+
 public class FramePrivateChat extends javax.swing.JFrame {
 
    
@@ -152,9 +156,25 @@ public class FramePrivateChat extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size)
+    {
+        Font f;
+        if(Bold && Italic)
+            f = new Font(FontName, Font.BOLD + Font.ITALIC, Size);
+        else
+        if(Bold)
+            f = new Font(FontName, Font.BOLD, Size);
+        else
+        if(Italic)
+            f = new Font(FontName, Font.ITALIC, Size);
+        else
+            f=new Font(FontName, Font.PLAIN, Size);
+        jTextArea_Input_Message.setFont(f);
+    }
     private void btnItalicMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnItalicMouseClicked
 
+        Italic = btnItalic.isSelected();
+        getFontStyle(FontName, Bold, Italic, FontSize);
     }//GEN-LAST:event_btnItalicMouseClicked
 
     private void btnColorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_btnColorStateChanged
@@ -162,7 +182,13 @@ public class FramePrivateChat extends javax.swing.JFrame {
     }//GEN-LAST:event_btnColorStateChanged
 
     private void btnColorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnColorMouseClicked
-       
+
+        Color c = JColorChooser.showDialog(null, "Chọn màu...", Color.MAGENTA);
+        ColorName  = clsClient.getCodeColor(c.getRed(), c.getGreen(), c.getBlue());
+        btnColor.setForeground(c);
+        //JOptionPane.showMessageDialog(null, ColorName);
+        jTextArea_Input_Message.setForeground(c);  
+        
     }//GEN-LAST:event_btnColorMouseClicked
 
     private void btnSendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSendMouseClicked
@@ -199,4 +225,8 @@ public class FramePrivateChat extends javax.swing.JFrame {
     private javax.swing.JTextPane jTextPane_Message;
     // End of variables declaration//GEN-END:variables
 
+     private String FontName = "Arial",ColorName="#000000";
+     private Boolean Bold = false,Under=false,Italic=false;
+     private int FontSize = 14,FontSize_HTML = 4,index1, index2;
+     private ChatClient_Process clsClient;
 }
