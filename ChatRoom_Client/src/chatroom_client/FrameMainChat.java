@@ -366,10 +366,28 @@ public class FrameMainChat extends javax.swing.JFrame {
         Italic = btnItali.isSelected();
         getFontStyle(FontName, Bold, Italic, FontSize);
     }//GEN-LAST:event_btnItaliMouseClicked
+    private void jSpinner_TextSizeStateChanged(javax.swing.event.ChangeEvent evt) {                                               
+        if(Integer.parseInt(jSpinner_TextSize.getValue().toString()) > 0 && Integer.parseInt(jSpinner_TextSize.getValue().toString()) < 100) {
+            FontSize = Integer.parseInt(jSpinner_TextSize.getValue().toString());
+        }
+        else {
+            jSpinner_TextSize.setValue(12);
+        }
+        getFontStyle(FontName, Bold, Italic, FontSize);
+        FontSize_HTML = (int)(FontSize/3);
+    }                                                                                  
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {                                           
+       
+        Author author = new Author();
+        author.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        author.show();
+    }                                          
+    
     private void btnColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnColorActionPerformed
+   
     public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size) {
         Font f;
         if(Bold && Italic)
@@ -423,9 +441,9 @@ public class FrameMainChat extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea_Iput_Message;
     private javax.swing.JTextPane jTextPane_Message;
     // End of variables declaration//GEN-END:variables
-        
+    
     private ChatClient_Process clsClient;
-    private ArrayList messageArr;
+    private ArrayList messageArr,privateUserArr;
     private String FontName = "Arial",ColorName="#000000";
     private Boolean Bold = false,Under=false,Italic=false;
     private String imageBgURL,ImagesDir;
