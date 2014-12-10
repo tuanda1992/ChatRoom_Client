@@ -1,6 +1,13 @@
 package chatroom_client;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Point;
+import java.net.Socket;
+import java.util.ArrayList;
+import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 
 public class FrameMainChat extends javax.swing.JFrame {
 
@@ -8,6 +15,45 @@ public class FrameMainChat extends javax.swing.JFrame {
         initComponents();
     }
     
+    public FrameMainChat(LoginClient MyParent, Socket _socket,String uid,String RoomName) {
+        try {
+            parent = MyParent;
+            socket = _socket;
+            UserName = uid;
+            ChatRoomName = RoomName;
+            initComponents();
+            FrameIcon fi =  new FrameIcon(this);
+
+            messageArr = new ArrayList();
+
+            clsClient = new ChatClient_Process(jTextPane_Message, jListUser, messageArr);
+            jSpinner_TextSize.setValue(14);
+           
+            clsClient.GetFontList(jComboBoxListFont);
+            jComboBoxListFont.setSelectedItem("Arial");
+            
+            ImagesDir = System.getProperty("user.dir") + "\\Images\\Background\\";
+            imageBgURL = "file:///" + ImagesDir + "cartoon.jpg";
+            clsClient.SetBackgroundPanel(imageBgURL);
+            
+            jLabel_RoomName.setText(ChatRoomName+":" +  " "  + UserName + " ");
+             
+            Message = "LOGROOM::" + ChatRoomName ;
+            clsClient.SendMessageToServer(socket, Message);
+            System.out.println(Message);
+        }
+        catch( Exception ex){
+            JOptionPane.showMessageDialog(null, "Thông báo lỗi: \n" + ex.getMessage(),"Thông báo",JOptionPane.ERROR_MESSAGE);
+        }  
+    }
+     public void SendPrivate(String Message) {
+        try {
+            clsClient.SendMessageToServer(socket, Message);
+        }
+        catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Có lỗi: " + ex.getMessage());
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -232,7 +278,9 @@ public class FrameMainChat extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIconMouseClicked
-        FrameIcon fi = new FrameIcon();
+        Point p =new Point(((int)(btnIcon.getLocationOnScreen().getX() + btnIcon.getWidth())),((int)(btnIcon.getLocationOnScreen().getY() - fi.getHeight())));
+        fi.setLocation(p);
+        fi.setDefaultCloseOperation(HIDE_ON_CLOSE);
         fi.show();
     }//GEN-LAST:event_btnIconMouseClicked
 
@@ -242,11 +290,47 @@ public class FrameMainChat extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxListFontItemStateChanged
 
     private void btnColorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnColorMouseClicked
-      
+      Color c = JColorChooser.showDialog(null, "Chọn màu...", Color.MAGENTA);
+        ColorName  = clsClient.getCodeColor(c.getRed(), c.getGreen(), c.getBlue());
+        btnColor.setForeground(c);
+        jTextArea_Iput_Message.setForeground(c);    
     }//GEN-LAST:event_btnColorMouseClicked
+    
+    private void btnSend(){
+        try {
+            MessageB = new StringBuilder();
+            MessageB.append(UserName + " :");
+            if(Bold)
+                MessageB.append("<b>");
+            if(Under)
+                MessageB.append("<u>");
+            if(Italic)
+                MessageB.append("<i>");
+            MessageB.append("<font face = \"" + FontName + "\" size=" + FontSize_HTML + " color = \"" + ColorName + "\">");
+            MessageB.append("  "); //thêm 2 dấu cách ngăn giữa phần định dạng và phần nội dung
+            MessageB.append(jTextArea_Iput_Message.getText());
+            MessageB.append("</font>");
+            if(Italic)
+                MessageB.append("</i>");
+            if(Under)
+                MessageB.append("</u>");
+            if(Bold)
+                MessageB.append("</b>");
 
+            Message = clsClient.ProcessMessage(MessageB.toString());
+            clsClient.SendMessageToServer(socket, "ROOMCHAT::" + Message);
+            clsClient.AddMessageToPanel(Message,imageBgURL);
+            jTextArea_Iput_Message.setText("");
+           
+            btnSend.setEnabled(false);
+        }
+        catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Có lỗi: " + ex.getMessage());
+        }
+
+    }
     private void btnSendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSendMouseClicked
-
+        btnSend();
     }//GEN-LAST:event_btnSendMouseClicked
 
     private void btnIconActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIconActionPerformed
@@ -260,12 +344,17 @@ public class FrameMainChat extends javax.swing.JFrame {
 
     private void jTextArea_Iput_MessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea_Iput_MessageKeyTyped
         if(jTextArea_Iput_Message.getText().contains("\n")){
-           
-         }     
+           btnSend();
+        }     
     }//GEN-LAST:event_jTextArea_Iput_MessageKeyTyped
 
     private void btnSendKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSendKeyPressed
-
+        if(jTextArea_Iput_Message.getText().equals("")) {
+            btnSend.setEnabled(false);
+        }
+        else {
+            btnSend.setEnabled(true);    
+        }
     }//GEN-LAST:event_btnSendKeyPressed
 
     private void btnUnderlineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUnderlineMouseClicked
@@ -334,9 +423,19 @@ public class FrameMainChat extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea_Iput_Message;
     private javax.swing.JTextPane jTextPane_Message;
     // End of variables declaration//GEN-END:variables
-    
+        
+    private ChatClient_Process clsClient;
+    private ArrayList messageArr;
     private String FontName = "Arial",ColorName="#000000";
     private Boolean Bold = false,Under=false,Italic=false;
-    private int FontSize = 14;
-    
+    private String imageBgURL,ImagesDir;
+    private int FontSize = 14,FontSize_HTML = 4,index1, index2;   
+   
+    private StringBuilder MessageB;
+    private String UserName="Default",ChatRoomName="Xì-tai";
+    private Socket socket;
+    private String Message;
+
+    private FrameIcon fi;
+    private LoginClient parent;
 }
