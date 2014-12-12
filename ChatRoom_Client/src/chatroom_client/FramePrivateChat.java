@@ -4,6 +4,7 @@ package chatroom_client;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
 
 public class FramePrivateChat extends javax.swing.JFrame {
 
@@ -186,13 +187,12 @@ public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size)
         Color c = JColorChooser.showDialog(null, "Chọn màu...", Color.MAGENTA);
         ColorName  = clsClient.getCodeColor(c.getRed(), c.getGreen(), c.getBlue());
         btnColor.setForeground(c);
-        //JOptionPane.showMessageDialog(null, ColorName);
         jTextArea_Input_Message.setForeground(c);  
         
     }//GEN-LAST:event_btnColorMouseClicked
 
     private void btnSendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSendMouseClicked
-       
+         btnSendMessage();
       
     }//GEN-LAST:event_btnSendMouseClicked
 
@@ -204,6 +204,41 @@ public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size)
     private void jTextArea_Input_MessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea_Input_MessageKeyTyped
       
     }//GEN-LAST:event_jTextArea_Input_MessageKeyTyped
+
+    public void btnSendMessage() {
+        try
+        {
+            //test su dung textPane  de hien thi HTML
+            MessageB = new StringBuilder();
+            MessageB.append(UserName + " :");
+            //Chèn định dạng chữ nếu có
+            if(Bold)
+                MessageB.append("<b>");
+            if(Under)
+                MessageB.append("<u>");
+            if(Italic)
+                MessageB.append("<i>");
+            MessageB.append("<font face = \"" + FontName + "\" size=" + FontSize_HTML + " color = \"" + ColorName + "\">");
+            MessageB.append("  ");
+            MessageB.append(jTextArea_Input_Message.getText());
+            MessageB.append("</font>");
+            if(Italic)
+                MessageB.append("</i>");
+            if(Under)
+                MessageB.append("</u>");
+            if(Bold)
+                MessageB.append("</b>");
+            Message = clsClient.ProcessMessage(MessageB.toString());
+            clsClient.AddMessageToPanel(Message,imageBgURL);
+            jTextArea_Input_Message.setText("");
+            parent.SendPrivate("PRIVATE::" + UserNameToChat + "--" + Message);
+            btnSend.setEnabled(false);
+        }
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(null, "Có lỗi: " + ex.getMessage());
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -229,4 +264,10 @@ public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size)
      private Boolean Bold = false,Under=false,Italic=false;
      private int FontSize = 14,FontSize_HTML = 4,index1, index2;
      private ChatClient_Process clsClient;
+     private String UserName="Default",ChatRoomName="Phòng Đồ Họa";
+     private StringBuilder MessageB;
+     private String Message;
+     private String UserNameToChat;
+     private FrameMainChat parent;
+     private String imageBgURL;
 }
