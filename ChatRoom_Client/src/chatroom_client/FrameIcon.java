@@ -1,5 +1,7 @@
 package chatroom_client;
 
+import javax.xml.ws.Action;
+
 public class FrameIcon extends javax.swing.JFrame {
 
     public FrameIcon() {
@@ -423,8 +425,30 @@ public class FrameIcon extends javax.swing.JFrame {
     }//GEN-LAST:event_btn01
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {                                      
+  if(pType)
+        {
+            
+        }
+        else
+        {
 
-    }       
+        }
+        
+    } 
+    
+      @Action
+      public void btn01() {
+        if(pType)
+            parentMain.setIcon(":)");
+       
+    }
+      @Action
+      public void btn02() {
+        if(pType)
+            parentMain.setIcon(":P");
+       
+    }
+      
 
     public static void main(String args[]) {
 
