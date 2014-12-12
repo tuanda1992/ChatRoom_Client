@@ -1,4 +1,3 @@
-
 package chatroom_client;
 
 import java.io.BufferedReader;
@@ -6,25 +5,21 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import javax.swing.JOptionPane;
 
-
 public class FrameConfingure extends javax.swing.JFrame {
 
-  
-   private FilesProcess file;
-   private String ConfigFile;
+    private FilesProcess file;
+    private String ConfigFile;
+
     public FrameConfingure() {
-         initComponents();
+        initComponents();
         ConfigFile = "Config.ini";
         file = new FilesProcess();
-        try
-        {
+        try {
             FileReader read = file.FileRead(ConfigFile);
             BufferedReader reader = new BufferedReader(read);
             String line = reader.readLine();
-            while(line != null)
-            {
-                if(line.startsWith("port"))
-                {
+            while (line != null) {
+                if (line.startsWith("port")) {
                     String str[] = line.trim().split("=");
                     spinPort.setValue(Integer.parseInt(str[1].trim()));
                 }
@@ -32,12 +27,10 @@ public class FrameConfingure extends javax.swing.JFrame {
             }
             reader.close();
             read.close();
+        } catch (Exception ex) {
+
         }
-        catch(Exception ex)
-        {
-           
-        }
-        
+
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -58,21 +51,16 @@ public class FrameConfingure extends javax.swing.JFrame {
         jLabel3.setText("Port");
 
         btnSave.setText("Save");
-        btnSave.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnSaveMouseClicked(evt);
-            }
-        });
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
         btnCancel.setText("Cancel");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -120,35 +108,29 @@ public class FrameConfingure extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-       
-    }//GEN-LAST:event_btnSaveActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
 
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-       
-        this.dispose();
-    }//GEN-LAST:event_btnCancelActionPerformed
+            FileWriter w = file.FileCreate(ConfigFile);
+            w.write(";Do An Java\r\n");
+            w.write(";Bach khoa Ha Noi\r\n");
+            w.write(";Cau hinh cho chat server\r\n");
+            w.write("port = " + spinPort.getValue() + "\r\n");
+            w.close();
 
-    private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
-        try{
-        FileWriter w = file.FileCreate(ConfigFile);
-                w.write(";Do An Java\r\n");
-                w.write(";Bach khoa Ha Noi\r\n");
-                w.write(";Cau hinh cho chat server\r\n");
-                w.write("port = " + spinPort.getValue() + "\r\n");
-                w.close();
-
-                JOptionPane.showMessageDialog(null, "Quá trình lưu thông tin cấu hình thành công!","Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
-        } catch(Exception ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi đọc file cấu hình:\n" + ex.getMessage(),"Thông báo",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Quá trình lưu thông tin cấu hình thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Lỗi đọc file cấu hình:\n" + ex.getMessage(), "Thông báo", JOptionPane.ERROR_MESSAGE);
         }
-        
-    }//GEN-LAST:event_btnSaveMouseClicked
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-   
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     public static void main(String args[]) {
-       
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FrameConfingure().setVisible(true);
@@ -156,7 +138,7 @@ public class FrameConfingure extends javax.swing.JFrame {
         });
     }
 
-  
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSave;
