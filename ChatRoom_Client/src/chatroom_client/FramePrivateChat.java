@@ -3,10 +3,43 @@ package chatroom_client;
 
 import java.awt.Font;
 import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 
 public class FramePrivateChat extends javax.swing.JFrame {
+    
+    public FramePrivateChat() {
+        initComponents();
+    }
+    public FramePrivateChat(FrameMainChat _parent, String uid,String UidToChat) {
+
+        UserName = uid;
+        UserNameToChat = UidToChat;
+        parent = _parent; //form me
+        initComponents();
+
+        this.setTitle(UserName +  " -|- " + UserNameToChat + " :: Chat Application ");
+        //Bạn đang chát với
+        jLabel_Chat_With.setText("Bạn đang trò chuyện với " + UserNameToChat);
+        
+        
+        messageArr = new ArrayList(); //khởi tạo mảng tin gửi
+        
+        clsClient = new ChatClient_Process(jTextPane_Message, null, messageArr);
+        jSpinnerText_Size.setValue(14);
+
+        ImagesDir = System.getProperty("user.dir") + "\\Images\\Background\\";
+        imageBgURL = "file:///" + ImagesDir + "sky.jpg";
+        clsClient.SetBackgroundPanel(imageBgURL);
+        //Lấy danh sách tất cả các font đã cài trên máy
+        clsClient.GetFontList(jComboBox_List);
+        jComboBox_List.setSelectedItem("Arial");
+        dlg = new FrameIcon(parent);
+        dlg.setDefaultCloseOperation(HIDE_ON_CLOSE); //thiết lập thuộc tính ẩn khi nhấn nút close
+    }
+
 
    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -260,14 +293,18 @@ public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size)
     private javax.swing.JTextPane jTextPane_Message;
     // End of variables declaration//GEN-END:variables
 
-     private String FontName = "Arial",ColorName="#000000";
-     private Boolean Bold = false,Under=false,Italic=false;
-     private int FontSize = 14,FontSize_HTML = 4,index1, index2;
-     private ChatClient_Process clsClient;
-     private String UserName="Default",ChatRoomName="Phòng Đồ Họa";
-     private StringBuilder MessageB;
-     private String Message;
-     private String UserNameToChat;
-     private FrameMainChat parent;
-     private String imageBgURL;
+     private FrameIcon dlg;
+    private ChatClient_Process clsClient;
+    private ArrayList messageArr;
+    private String FontName = "Arial",ColorName="#000000";
+    private Boolean Bold = false,Under=false,Italic=false;
+    private String imageBgURL,ImagesDir;
+    private int FontSize = 14,FontSize_HTML = 4,index1, index2;
+    private StringBuilder MessageB;
+    private String UserName="Default",ChatRoomName="Phòng Đồ Họa";
+    private Boolean sendFlag=false; //cờ cho phép đưa dữ liệu lên panel -
+    private String readString,Message;
+    private Thread thread;
+    private String UserNameToChat;
+    private FrameMainChat parent;
 }
