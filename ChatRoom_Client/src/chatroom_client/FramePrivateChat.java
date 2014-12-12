@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 
 public class FramePrivateChat extends javax.swing.JFrame {
@@ -45,6 +46,7 @@ public class FramePrivateChat extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jLabel_Chat_With = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane_Message = new javax.swing.JTextPane();
@@ -61,12 +63,21 @@ public class FramePrivateChat extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jCheckBox_Cartoon = new javax.swing.JMenuItem();
+        jCheckBox_sky = new javax.swing.JMenuItem();
+        jCheckBox_tree = new javax.swing.JMenuItem();
+        jCheckBox_Heart = new javax.swing.JMenuItem();
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel_Chat_With.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel_Chat_With.setText("Private Chat");
 
+        jTextPane_Message.setEditable(false);
         jScrollPane1.setViewportView(jTextPane_Message);
 
         jTextArea_Input_Message.setColumns(20);
@@ -128,51 +139,88 @@ public class FramePrivateChat extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setText("Change Picture");
+        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu3ActionPerformed(evt);
+            }
+        });
+
+        jCheckBox_Cartoon.setText("Cartoon");
+        jCheckBox_Cartoon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_CartoonActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jCheckBox_Cartoon);
+
+        jCheckBox_sky.setText("Sky");
+        jCheckBox_sky.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_skyActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jCheckBox_sky);
+
+        jCheckBox_tree.setText("Left");
+        jCheckBox_tree.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_treeActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jCheckBox_tree);
+
+        jCheckBox_Heart.setText("Heart");
+        jCheckBox_Heart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_HeartActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jCheckBox_Heart);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel_Chat_With, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(83, 83, 83))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
                         .addComponent(btnBold, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(31, 31, 31)
                         .addComponent(btnUnderline, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnItalic, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox_List, 0, 147, Short.MAX_VALUE)
-                        .addGap(28, 28, 28)
+                        .addComponent(jComboBox_List, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jSpinnerText_Size, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)
-                        .addComponent(btnColor, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
-                .addContainerGap())
+                        .addGap(18, 18, 18)
+                        .addComponent(btnColor)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 476, Short.MAX_VALUE)
+                                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel_Chat_With, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(100, 100, 100))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel_Chat_With, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBold)
@@ -181,11 +229,10 @@ public class FramePrivateChat extends javax.swing.JFrame {
                     .addComponent(jComboBox_List, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinnerText_Size, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnColor))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSend)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnSend))
         );
 
         pack();
@@ -231,12 +278,47 @@ public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size)
 
     
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-      
+      Author author = new Author();
+        author.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        author.show();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jTextArea_Input_MessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea_Input_MessageKeyTyped
       
     }//GEN-LAST:event_jTextArea_Input_MessageKeyTyped
+
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu3ActionPerformed
+
+    private void jCheckBox_CartoonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_CartoonActionPerformed
+       jCheckBox_Cartoon.isEnabled();
+        ImagesDir = System.getProperty("user.dir") + "\\Images\\Background\\";
+        imageBgURL = "file:///" + ImagesDir + "cartoon.jpg";
+        clsClient.SetBackgroundPanel(imageBgURL);
+    }//GEN-LAST:event_jCheckBox_CartoonActionPerformed
+
+    private void jCheckBox_skyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_skyActionPerformed
+      jCheckBox_Cartoon.isEnabled();
+        ImagesDir = System.getProperty("user.dir") + "\\Images\\Background\\";
+        imageBgURL = "file:///" + ImagesDir + "sky.jpg";
+        clsClient.SetBackgroundPanel(imageBgURL);
+        
+    }//GEN-LAST:event_jCheckBox_skyActionPerformed
+
+    private void jCheckBox_treeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_treeActionPerformed
+        jCheckBox_Cartoon.isEnabled();
+        ImagesDir = System.getProperty("user.dir") + "\\Images\\Background\\";
+        imageBgURL = "file:///" + ImagesDir + "Left.jpg";
+        clsClient.SetBackgroundPanel(imageBgURL);
+    }//GEN-LAST:event_jCheckBox_treeActionPerformed
+
+    private void jCheckBox_HeartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_HeartActionPerformed
+          jCheckBox_Cartoon.isEnabled();
+        ImagesDir = System.getProperty("user.dir") + "\\Images\\Background\\";
+        imageBgURL = "file:///" + ImagesDir + "Nice.jpg";
+        clsClient.SetBackgroundPanel(imageBgURL);
+    }//GEN-LAST:event_jCheckBox_HeartActionPerformed
 
     public void btnSendMessage() {
         try
@@ -280,10 +362,16 @@ public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size)
     private javax.swing.JButton btnItalic;
     private javax.swing.JButton btnSend;
     private javax.swing.JButton btnUnderline;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JMenuItem jCheckBox_Cartoon;
+    private javax.swing.JMenuItem jCheckBox_Heart;
+    private javax.swing.JMenuItem jCheckBox_sky;
+    private javax.swing.JMenuItem jCheckBox_tree;
     private javax.swing.JComboBox jComboBox_List;
     private javax.swing.JLabel jLabel_Chat_With;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
