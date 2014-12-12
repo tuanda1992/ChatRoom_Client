@@ -252,6 +252,19 @@ public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size)
             f=new Font(FontName, Font.PLAIN, Size);
         jTextArea_Input_Message.setFont(f);
     }
+public void setSmile(String smile)
+    {
+        jTextArea_Input_Message.setText(jTextArea_Input_Message.getText() + smile);
+    }
+  public String getUsernameToChat()
+    {
+        return UserNameToChat;
+    }
+
+    public void GetMessageAndAddToPanel(String Message)
+    {
+        clsClient.AddMessageToPanel(Message,imageBgURL);
+    }
     private void btnItalicMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnItalicMouseClicked
 
         Italic = btnItalic.isSelected();
@@ -284,7 +297,9 @@ public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size)
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jTextArea_Input_MessageKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea_Input_MessageKeyTyped
-      
+       if(jTextArea_Input_Message.getText().contains("\n")){
+            btnSendMessage();
+        }
     }//GEN-LAST:event_jTextArea_Input_MessageKeyTyped
 
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
@@ -353,6 +368,37 @@ public void getFontStyle(String FontName,Boolean Bold,Boolean Italic, int Size)
         {
             JOptionPane.showMessageDialog(null, "Có lỗi: " + ex.getMessage());
         }
+    }
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FramePrivateChat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FramePrivateChat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FramePrivateChat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FramePrivateChat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FramePrivateChat().setVisible(true);
+            }
+        });
     }
 
 
