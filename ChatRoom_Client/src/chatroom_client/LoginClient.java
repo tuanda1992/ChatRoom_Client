@@ -1,9 +1,11 @@
 
 package chatroom_client;
 
+import java.awt.Color;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import javax.swing.JOptionPane;
 
 public class LoginClient extends javax.swing.JFrame implements Setting{
 
@@ -153,11 +155,42 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
     }//GEN-LAST:event_btnLoginMouseClicked
 
     public void Logout(){
+         if(socket != null)
+        {
+            try
+            {
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                out.writeUTF("LOGOUT\r\n");
+                JOptionPane.showMessageDialog(null, "Bạn đã đăng xuất khỏi hệ thống!");
+            }
+            catch(Exception ex)
+            {
+                JOptionPane.showMessageDialog(null, "Quá trình đăng xuất xảy ra lỗi.\nHệ thống sẽ tự động thoát.","Thông báo",JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }
+
+        }
         
         
     }
     private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseClicked
-           
+
+        try
+        {
+
+            frm.dispose();
+            Logout();
+            btnCancel.setEnabled(false);
+            btnLogin.setEnabled(true);
+            btnLogin.setText("Đăng nhập");
+            jTextUser.setEditable(true);
+            jTextUser.setBackground(Color.WHITE);
+            btnCancel.setEnabled(false);
+            First = true;
+            socket.close();
+            socket = null;
+        }
+        catch(Exception ex) {}
     }//GEN-LAST:event_btnCancelMouseClicked
 
     private void comboBox_RoomItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBox_RoomItemStateChanged
