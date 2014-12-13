@@ -484,23 +484,22 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
         getFontStyle(FontName, Bold, Italic, FontSize);
         FontSize_HTML = (int) (FontSize / 3);
     }//GEN-LAST:event_jSpinner_TextSizeStateChanged
-    
-    private int ClickCount =1;
+
+    private int ClickCount = 1;
     private void jListUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUserMouseClicked
         ClickCount++;
-        if(ClickCount==2) {
-            ClickCount =0;
-            if(checkExistPrivateChatUser(jListUser.getSelectedValue().toString())) {
-                for(Object c: privateUserArr) {
-                    FramePrivateChat tmpObject = (FramePrivateChat)c;
-                    if(tmpObject.getUsernameToChat().equalsIgnoreCase(jListUser.getSelectedValue().toString())) {
+        if (ClickCount == 2) {
+            ClickCount = 0;
+            if (checkExistPrivateChatUser(jListUser.getSelectedValue().toString())) {
+                for (Object c : privateUserArr) {
+                    FramePrivateChat tmpObject = (FramePrivateChat) c;
+                    if (tmpObject.getUsernameToChat().equalsIgnoreCase(jListUser.getSelectedValue().toString())) {
                         tmpObject.show();
                         return;
                     }
                 }
-            }
-            else {
-                FramePrivateChat priChat = new FramePrivateChat(this,UserName, jListUser.getSelectedValue().toString());
+            } else {
+                FramePrivateChat priChat = new FramePrivateChat(this, UserName, jListUser.getSelectedValue().toString());
                 priChat.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                 AddPrivateChat(priChat, jListUser.getSelectedValue().toString());
                 priChat.show();
@@ -509,7 +508,7 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jListUserMouseClicked
 
     private void jListUserValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListUserValueChanged
-        ClickCount =0;
+        ClickCount = 0;
     }//GEN-LAST:event_jListUserValueChanged
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -536,49 +535,50 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
         }
         jTextArea_Iput_Message.setFont(f);
     }
-    
-    public void ShowUserName(String userList){
+
+    public void ShowUserName(String userList) {
         String usrList[] = userList.split("--");
         jListUser.setListData(usrList);
     }
-    
-    public void AddPrivateChat(FramePrivateChat frm,String UserNameToChat) {
-        if(checkExistPrivateChatUser(UserNameToChat) ==false) {
+
+    public void AddPrivateChat(FramePrivateChat frm, String UserNameToChat) {
+        if (checkExistPrivateChatUser(UserNameToChat) == false) {
             privateUserArr.add(frm);
         }
     }
-    
+
     public void ShowPrivateChat() {
-        FramePrivateChat frmCl=new FramePrivateChat(this, UserName,jListUser.getSelectedValue().toString());
+        FramePrivateChat frmCl = new FramePrivateChat(this, UserName, jListUser.getSelectedValue().toString());
         frmCl.show();
     }
-    
+
     public void RemovePrivateChat(FramePrivateChat frm) {
         privateUserArr.remove(frm);
         privateUserArr.trimToSize();
     }
-    
+
     public FramePrivateChat getPrivateFormChat(String UserToChat) {
-        for(Object c: privateUserArr) { 
-            FramePrivateChat tmpObject = (FramePrivateChat)c;
-            if(tmpObject.getUsernameToChat().equalsIgnoreCase(UserToChat)) {
+        for (Object c : privateUserArr) {
+            FramePrivateChat tmpObject = (FramePrivateChat) c;
+            if (tmpObject.getUsernameToChat().equalsIgnoreCase(UserToChat)) {
                 return tmpObject;
             }
         }
         return null;
     }
-    
-    private Boolean checkExistPrivateChatUser(String UserNameToChat)
-    {
-        if(getPrivateFormChat(UserNameToChat)!=null)
+
+    private Boolean checkExistPrivateChatUser(String UserNameToChat) {
+        if (getPrivateFormChat(UserNameToChat) != null) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
-    private void AddMsgToPrivateChatForm(FramePrivateChat frm,String Message) {
+
+    private void AddMsgToPrivateChatForm(FramePrivateChat frm, String Message) {
         frm.GetMessageAndAddToPanel(Message);
     }
-     
+
     public void setIcon(String icon) {
         jTextArea_Iput_Message.setText(jTextArea_Iput_Message.getText() + icon);
     }
@@ -631,9 +631,9 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
     private int FontSize = 14, FontSize_HTML = 4, index1, index2;
 
     private StringBuilder MessageB;
-    private String UserName = "Default", ChatRoomName = "Xì-tai";
+    private String UserName = "Default", ChatRoomName = "IT";
     private Socket socket;
-    private String Message;
+    private String readString, Message;
     private Thread thread;
 
     private FrameIcon fi;
@@ -643,6 +643,41 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        while (thread != null) {
+            try {
+                readString = in.readUTF();
+                System.out.println("Main Chat: " + readString);
+
+                if (readString.startsWith("ROOMLIST")) {
+                    index1 = readString.indexOf("::") + 2;
+                    String roomList = readString.substring(index1);
+                    ShowUserName(roomList);
+                }
+                if (readString.startsWith("ROOMCHAT") || readString.startsWith("WELLCOME") || readString.startsWith("NEWUSER") || readString.startsWith("EXIST")) {
+                    index1 = readString.indexOf("::") + 2;
+                    String Message = readString.substring(index1);
+                    clsClient.AddMessageToPanel(Message, imageBgURL);
+                }
+                if (readString.startsWith("PRIVATE")) {
+                    index1 = readString.indexOf("::") + 2;
+                    index2 = readString.indexOf("--");
+                    String tmpUserToChat = readString.substring(index1, index2);
+                    String Message = readString.substring(index2 + 2); //lấy nội dung tin sau dấu --
+                    if (checkExistPrivateChatUser(tmpUserToChat)) {
+                        ((FramePrivateChat) getPrivateFormChat(tmpUserToChat)).GetMessageAndAddToPanel(Message);
+                    } else {
+                        FramePrivateChat frm = new FramePrivateChat(this, UserName, tmpUserToChat);
+                        frm.setDefaultCloseOperation(DISPOSE_ON_CLOSE); //Tự giải phóng bộ nhớ sau khi đóng
+                        AddPrivateChat(frm, tmpUserToChat);
+                        frm.show();
+                        frm.GetMessageAndAddToPanel(Message);
+                    }
+                }
+            } catch (Exception ex) {
+                thread.stop();
+                thread = null;
+                break;
+            }
+        }
     }
 }
