@@ -103,6 +103,11 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
         jCheckBox_Nice = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         btnSend.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         btnSend.setText("Send");
@@ -154,6 +159,12 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
             }
         });
 
+        jSpinner_TextSize.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinner_TextSizeStateChanged(evt);
+            }
+        });
+
         jComboBoxListFont.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBoxListFontItemStateChanged(evt);
@@ -168,15 +179,15 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
                 btnColorMouseClicked(evt);
             }
         });
-        btnColor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnColorActionPerformed(evt);
+
+        jListUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListUserMouseClicked(evt);
             }
         });
-
-        jListUser.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
-            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
-                jListUserVetoableChange(evt);
+        jListUser.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListUserValueChanged(evt);
             }
         });
         jScrollPane2.setViewportView(jListUser);
@@ -212,6 +223,11 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
         jMenu2.setText("About");
 
         jMenuItem2.setText("Author");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem2);
 
         jMenuBar1.add(jMenu2);
@@ -219,15 +235,6 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
         jMenu3.setText("Change Picture");
 
         jCheckBox_Sky.setText("Sky");
-        jCheckBox_Sky.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                jCheckBox_SkyAncestorAdded(evt);
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
         jCheckBox_Sky.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox_SkyActionPerformed(evt);
@@ -443,26 +450,6 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
         Italic = btnItali.isSelected();
         getFontStyle(FontName, Bold, Italic, FontSize);
     }//GEN-LAST:event_btnItaliMouseClicked
-    private void jSpinner_TextSizeStateChanged(javax.swing.event.ChangeEvent evt) {
-        if (Integer.parseInt(jSpinner_TextSize.getValue().toString()) > 0 && Integer.parseInt(jSpinner_TextSize.getValue().toString()) < 100) {
-            FontSize = Integer.parseInt(jSpinner_TextSize.getValue().toString());
-        } else {
-            jSpinner_TextSize.setValue(12);
-        }
-        getFontStyle(FontName, Bold, Italic, FontSize);
-        FontSize_HTML = (int) (FontSize / 3);
-    }
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {
-
-        Author author = new Author();
-        author.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        author.show();
-    }
-
-    private void btnColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnColorActionPerformed
 
     private void jCheckBox_TreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_TreeActionPerformed
         jCheckBox_Tree.isEnabled();
@@ -470,10 +457,6 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
         imageBgURL = "file:///" + ImagesDir + "Friend.jpg";
         clsClient.SetBackgroundPanel(imageBgURL);
     }//GEN-LAST:event_jCheckBox_TreeActionPerformed
-
-    private void jCheckBox_SkyAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jCheckBox_SkyAncestorAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox_SkyAncestorAdded
 
     private void jCheckBox_SkyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_SkyActionPerformed
         jCheckBox_Sky.isEnabled();
@@ -496,9 +479,35 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
         clsClient.SetBackgroundPanel(imageBgURL);
     }//GEN-LAST:event_jCheckBox_HeartActionPerformed
 
-    private void jListUserVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_jListUserVetoableChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jListUserVetoableChange
+    private void jSpinner_TextSizeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner_TextSizeStateChanged
+        if (Integer.parseInt(jSpinner_TextSize.getValue().toString()) > 0 && Integer.parseInt(jSpinner_TextSize.getValue().toString()) < 100) {
+            FontSize = Integer.parseInt(jSpinner_TextSize.getValue().toString());
+        } else {
+            jSpinner_TextSize.setValue(12);
+        }
+        getFontStyle(FontName, Bold, Italic, FontSize);
+        FontSize_HTML = (int) (FontSize / 3);
+    }//GEN-LAST:event_jSpinner_TextSizeStateChanged
+    
+    private int ClickCount =1;
+    private void jListUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUserMouseClicked
+        
+    }//GEN-LAST:event_jListUserMouseClicked
+
+    private void jListUserValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListUserValueChanged
+        ClickCount =0;
+    }//GEN-LAST:event_jListUserValueChanged
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        Author author = new Author();
+        author.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        author.show();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        clsClient.SendMessageToServer(socket, "OUTROOM");
+           parent.ChangeRoomAble();
+    }//GEN-LAST:event_formWindowClosing
 
     public void getFontStyle(String FontName, Boolean Bold, Boolean Italic, int Size) {
         Font f;

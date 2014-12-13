@@ -154,6 +154,11 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
         
     }//GEN-LAST:event_btnLoginMouseClicked
 
+    public void ChangeRoomAble(){
+        btnLogin.setEnabled(true);
+        btnLogin.setText(" Vào Phòng");
+    }
+        
     public void Logout(){
          if(socket != null)
         {
