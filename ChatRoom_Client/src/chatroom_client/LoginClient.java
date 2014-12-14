@@ -19,6 +19,15 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
 
    
     public LoginClient() {
+         initComponents();
+        
+        for(int i=0 ;i< roomList.length; i++)
+        {
+            comboBox_Room.insertItemAt(roomList[i], i);
+            
+            
+        }
+        comboBox_Room.setSelectedIndex(0);
        
     }
     @SuppressWarnings("unchecked")
@@ -154,6 +163,9 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
        
+         FrameConfingure Fcf = new FrameConfingure();
+        
+        Fcf.show();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
@@ -334,7 +346,15 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
        
     }//GEN-LAST:event_btnCancelActionPerformed
- 
+  private String ChuanHoaChuoi(String str)
+    {
+        
+        while(str.contains("  "))
+        {
+            str = str.replaceAll("  ", " ");
+        }
+        return str;
+    }
 
     public static void main(String args[]) {
       
