@@ -2,12 +2,20 @@
 package chatroom_client;
 
 import java.awt.Color;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileReader;
 import java.net.Socket;
+import java.sql.DriverManager;
 import javax.swing.JOptionPane;
+import java.sql.*;
 
 public class LoginClient extends javax.swing.JFrame implements Setting{
+    Connection con;
+    Statement st;
+    ResultSet rs;
 
    
     public LoginClient() {
@@ -23,7 +31,7 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
         btnCancel = new javax.swing.JButton();
         jLabelUser = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        Password = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -71,7 +79,7 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel2.setText("Room");
 
-        jPasswordField1.setText("jPasswordField1");
+        Password.setText("jPasswordField1");
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setText("Password");
@@ -105,7 +113,7 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
                     .addComponent(jLabel2))
                 .addGap(9, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPasswordField1)
+                    .addComponent(Password)
                     .addComponent(jTextUser, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -129,7 +137,7 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 7, Short.MAX_VALUE)
                         .addComponent(jLabel1))
-                    .addComponent(jPasswordField1))
+                    .addComponent(Password))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
@@ -150,7 +158,124 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
       
-       
+       ConfigFile =  "Config.ini";
+        file = new FilesProcess();
+        try
+        {
+            FileReader read = file.FileRead(ConfigFile);
+            BufferedReader reader = new BufferedReader(read);
+            String line = reader.readLine();
+            while(line != null)
+            {
+                if(line.startsWith("server"))
+                {
+                    String str[] = line.trim().split("=");
+                    HostName = str[1].trim();
+                }
+                if(line.startsWith("port"))
+                {
+                    String str[] = line.trim().split("=");
+                    Port = Integer.parseInt(str[1].trim());
+                }
+                line = reader.readLine();
+            }
+            
+            reader.close();
+            read.close();
+
+            if(jTextUser.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(null, "Bạn chưa nhập vào NickName!","Thông báo",JOptionPane.WARNING_MESSAGE);
+            }
+            
+            else
+            {   
+                
+                
+                    try
+                    {
+                        try
+                        {
+                        String driver = "sun.jdbc.odbc.JdbcOdbcDriver";
+                        Class.forName(driver);
+                        String db = "jdbc:odbc:Db1";
+                        con = DriverManager.getConnection(db);
+                        st = con.createStatement();
+                        }
+                        catch(Exception e){
+                            
+                        }
+                     
+                        UserName = jTextUser.getText().trim();
+                        String Pass = Password.getText().trim();
+                        String spl = " select user,pass from Database4 where user = '"+UserName+"'and pass = '"+Pass+"'";
+                        rs = st.executeQuery(spl);
+                        int count =0;
+                        while(rs.next()){
+                            count++;
+                            
+                        }
+                        if(count==1){
+                            JOptionPane.showMessageDialog(null, "alo");
+                        }
+                    
+                    if(First)
+                    {
+                        
+                        socket = new Socket(HostName, Port);
+                        out = new DataOutputStream(socket.getOutputStream());
+                        in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                        str= "HELLO" + "::" + UserName + "--"+ comboBox_Room.getSelectedItem().toString();
+                        out.writeUTF(str + "\r\n");
+                        ReadString = in.readUTF();
+                       
+                        str=ReadString;
+                        if(ReadString.startsWith("EXIST") == false)
+                        {
+                            JOptionPane.showMessageDialog(null, str,"Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                           
+                            
+                            btnLogin.setEnabled(false);
+                            jTextUser.setEditable(false);
+                            jTextUser.setBackground(Color.green);
+                             frm = new FrameMainChat(this, socket, UserName, comboBox_Room.getSelectedItem().toString());
+                            frm.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+                           
+                            frm.show();
+                            First=false;
+                            btnCancel.setEnabled(true);
+                        }
+                        else
+                        {
+                            Index1 = str.indexOf("::") + 2;
+                            JOptionPane.showMessageDialog(null, str.substring(Index1),"Thông báo",JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    else
+                    {
+                      
+                       btnLogin.setEnabled(false);
+                       btnCancel.setEnabled(true);
+                        jTextUser.setEditable(false);
+                        jTextUser.setBackground(Color.green);
+                        frm = new FrameMainChat(this, socket, UserName, comboBox_Room.getSelectedItem().toString());
+                       frm.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+                        frm.setTitle(comboBox_Room.getSelectedItem().toString() );
+                        frm.show();
+
+                    }
+                    }
+                    catch(Exception ex)
+                    {
+                        JOptionPane.showMessageDialog(null, "Không thể kết nối tới máy chủ!","Thông báo",JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        
+            catch(Exception ex)
+            {
+                JOptionPane.showMessageDialog(null, "Lỗi đọc file cấu hình.\nBạn vui lòng chọn Menu 'Hệ thống', chọn 'Cấu hình cổng' để thiết lập lại thông số." ,"Thông báo",JOptionPane.ERROR_MESSAGE);
+            }
         
     }//GEN-LAST:event_btnLoginMouseClicked
 
@@ -221,6 +346,7 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField Password;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnLogin;
     private javax.swing.JComboBox comboBox_Room;
@@ -231,7 +357,6 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextUser;
     // End of variables declaration//GEN-END:variables
  private Socket socket;
@@ -244,5 +369,6 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
     private Boolean First=true; //cờ xác nhận lần đầu log
     private FrameMainChat frm;
     private String RootDir,ConfigFile;
+     private FilesProcess file;
     
 }
