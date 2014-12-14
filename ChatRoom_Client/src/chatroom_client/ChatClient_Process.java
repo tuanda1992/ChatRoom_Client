@@ -13,7 +13,12 @@ import javax.swing.JTextPane;
 public class ChatClient_Process implements Setting,Runnable {
     
     public ChatClient_Process(javax.swing.JTextPane mPane,javax.swing.JList mList,ArrayList mArr)
-    {
+    {   MessagePane = mPane;
+        UserList = mList;
+        messageArr = mArr;
+        ImageDir = System.getProperty("user.dir") + "\\Images\\Smiles\\";
+        thread = new Thread(this);
+        thread.start();
 
     }
     
