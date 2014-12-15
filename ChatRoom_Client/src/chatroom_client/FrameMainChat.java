@@ -204,12 +204,18 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
         jScrollPane1.setViewportView(jTextArea_Iput_Message);
 
         jTextPane_Message.setEditable(false);
+        jTextPane_Message.setContentType("text/html"); // NOI18N
         jScrollPane4.setViewportView(jTextPane_Message);
 
         jLabel_RoomName.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel_RoomName.setText("Chat Room");
 
         jMenu1.setText("File");
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
 
         jMenuItem1.setText("Exit");
         jMenu1.add(jMenuItem1);
@@ -521,6 +527,10 @@ public class FrameMainChat extends javax.swing.JFrame implements Runnable {
         clsClient.SendMessageToServer(socket, "OUTROOM");
         parent.ChangeRoomAble();
     }//GEN-LAST:event_formWindowClosing
+
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        System.exit(1);
+    }//GEN-LAST:event_jMenu1ActionPerformed
 
     public void getFontStyle(String FontName, Boolean Bold, Boolean Italic, int Size) {
         Font f;
