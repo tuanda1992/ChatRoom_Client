@@ -59,8 +59,8 @@
               </Group>
               <EmptySpace min="9" pref="25" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="Password" max="32767" attributes="0"/>
-                  <Component id="jTextUser" alignment="1" max="32767" attributes="0"/>
+                  <Component id="txtPassword" max="32767" attributes="0"/>
+                  <Component id="txtUsername" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="btnLogin" min="-2" pref="100" max="-2" attributes="0"/>
                       <EmptySpace pref="57" max="32767" attributes="0"/>
@@ -82,7 +82,7 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextUser" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="txtUsername" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -91,7 +91,7 @@
                       <EmptySpace min="0" pref="7" max="32767" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="Password" max="32767" attributes="0"/>
+                  <Component id="txtPassword" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
@@ -109,7 +109,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JTextField" name="jTextUser">
+    <Component class="javax.swing.JTextField" name="txtUsername">
     </Component>
     <Component class="javax.swing.JComboBox" name="comboBox_Room">
       <Properties>
@@ -164,10 +164,7 @@
         <Property name="text" type="java.lang.String" value="Room"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JPasswordField" name="Password">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
-      </Properties>
+    <Component class="javax.swing.JPasswordField" name="txtPassword">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>

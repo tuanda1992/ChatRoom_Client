@@ -8,7 +8,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.net.Socket;
-import java.sql.DriverManager;
 import javax.swing.JOptionPane;
 import java.sql.*;
 
@@ -34,13 +33,13 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextUser = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
         comboBox_Room = new javax.swing.JComboBox();
         btnLogin = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jLabelUser = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        Password = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -88,8 +87,6 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel2.setText("Room");
 
-        Password.setText("jPasswordField1");
-
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setText("Password");
 
@@ -122,8 +119,8 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
                     .addComponent(jLabel2))
                 .addGap(9, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Password)
-                    .addComponent(jTextUser, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtPassword)
+                    .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
@@ -140,13 +137,13 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
                         .addComponent(jLabelUser))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jTextUser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 7, Short.MAX_VALUE)
                         .addComponent(jLabel1))
-                    .addComponent(Password))
+                    .addComponent(txtPassword))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
@@ -195,41 +192,26 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
             reader.close();
             read.close();
 
-            if(jTextUser.getText().equals(""))
+            if(txtUsername.getText().equals(""))
             {
                 JOptionPane.showMessageDialog(null, "Bạn chưa nhập vào NickName!","Thông báo",JOptionPane.WARNING_MESSAGE);
             }
             
             else
-            {   
-                
-                
-                    try
+            {   String authenAcount = txtUsername.getText() + "-" + txtPassword.getText();
+                try (FileReader fr = new FileReader("src\\Account\\account.txt")) {
+                    BufferedReader br = new BufferedReader(fr);
+                    String s;
+                    boolean check = false;
+                    while ((s = br.readLine()) != null) {
+                        if (s.equals(authenAcount)) {
+                            check = true;
+                            break;
+                        }
+                    }
+                    if (check == true) {
+                try
                     {
-                        try
-                        {
-                        String driver = "sun.jdbc.odbc.JdbcOdbcDriver";
-                        Class.forName(driver);
-                        String db = "jdbc:odbc:Db1";
-                        con = DriverManager.getConnection(db);
-                        st = con.createStatement();
-                        }
-                        catch(Exception e){
-                            
-                        }
-                     
-                        UserName = jTextUser.getText().trim();
-                        String Pass = Password.getText().trim();
-                        String spl = " select user,pass from Database4 where user = '"+UserName+"'and pass = '"+Pass+"'";
-                        rs = st.executeQuery(spl);
-                        int count =0;
-                        while(rs.next()){
-                            count++;
-                            
-                        }
-                        if(count==1){
-                            JOptionPane.showMessageDialog(null, "alo");
-                        }
                     
                     if(First)
                     {
@@ -248,8 +230,8 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
                            
                             
                             btnLogin.setEnabled(false);
-                            jTextUser.setEditable(false);
-                            jTextUser.setBackground(Color.green);
+                            txtUsername.setEditable(false);
+                            txtUsername.setBackground(Color.green);
                              frm = new FrameMainChat(this, socket, UserName, comboBox_Room.getSelectedItem().toString());
                             frm.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
                            
@@ -268,8 +250,8 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
                       
                        btnLogin.setEnabled(false);
                        btnCancel.setEnabled(true);
-                        jTextUser.setEditable(false);
-                        jTextUser.setBackground(Color.green);
+                        txtUsername.setEditable(false);
+                        txtUsername.setBackground(Color.green);
                         frm = new FrameMainChat(this, socket, UserName, comboBox_Room.getSelectedItem().toString());
                        frm.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
                         frm.setTitle(comboBox_Room.getSelectedItem().toString() );
@@ -281,6 +263,12 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
                     {
                         JOptionPane.showMessageDialog(null, "Không thể kết nối tới máy chủ!","Thông báo",JOptionPane.ERROR_MESSAGE);
                     }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Username hoặc Password không đúng!","Thông báo",JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch(Exception e) {
+                    JOptionPane.showMessageDialog(null, "Lỗi!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                }
                 }
             }
         
@@ -325,8 +313,8 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
             btnCancel.setEnabled(false);
             btnLogin.setEnabled(true);
             btnLogin.setText("Đăng nhập");
-            jTextUser.setEditable(true);
-            jTextUser.setBackground(Color.WHITE);
+            txtUsername.setEditable(true);
+            txtUsername.setBackground(Color.WHITE);
             btnCancel.setEnabled(false);
             First = true;
             socket.close();
@@ -366,7 +354,6 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPasswordField Password;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnLogin;
     private javax.swing.JComboBox comboBox_Room;
@@ -377,7 +364,8 @@ public class LoginClient extends javax.swing.JFrame implements Setting{
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JTextField jTextUser;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
  private Socket socket;
     private DataOutputStream out;
